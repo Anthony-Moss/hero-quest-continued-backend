@@ -1,6 +1,6 @@
 const db = require('./conn');
 const bcrypt = require('bcrpytjs');
-const escapeHtml = require('../utils');
+const escapeHTML = require('../utils');
 
 class User {
     constructor(id, first_name, last_name, user_name, email, password) {
@@ -13,11 +13,11 @@ class User {
     }
 
     static add(userData) {
-        const firstName = escapeHtml(userData.first_name);
-        const lastName = escapeHtml(userData.last_name);
-        const userName = escapeHtml(userData.user_name);
-        const email = escapeHtml(userData.email);
-        const aPassword = escapeHtml(userData.password)
+        const firstName = escapeHTML(userData.first_name);
+        const lastName = escapeHTML(userData.last_name);
+        const userName = escapeHTML(userData.user_name);
+        const email = escapeHTML(userData.email);
+        const aPassword = escapeHTML(userData.password)
         // const hashedPass = User.hashPass(aPassword)
         return db.one(`
             insert into users
@@ -52,7 +52,7 @@ class User {
     }
 
     static checkUserName(userName) {
-        const aUserName = escapeHtml(userName);
+        const aUserName = escapeHTML(userName);
         return db.one(`select user_name from users where userName=$1`,  [aUserName])
         .catch(() => {
             return null;
