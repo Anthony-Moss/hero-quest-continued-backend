@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "db:create": "createdb hero-quest",
-    "db:init": "psql -f schema.sql hero-quest && psql -f seed.sql hero-quest",
-    "db:destroy": "dropdb hero-quest",
+    "db:create": "createdb hero-quest-2",
+    "db:init": "psql -f schema.sql hero-quest-2 && psql -f seed.sql hero-quest-2",
+    "db:destroy": "dropdb hero-quest-2",
     "db:reset": "npm run db:destroy; npm run db:create && npm run db:init",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
