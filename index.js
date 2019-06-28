@@ -8,9 +8,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// const userRouter =  require(route_to_user_router)
+const userRouter =  require('./routers/users')
 
-// app.use('/heroQuest', userRouter);
+app.use('/heroQuest', userRouter);
 
 app.listen(port, () => {
     console.log(`you got the backend running on port ${port}`);

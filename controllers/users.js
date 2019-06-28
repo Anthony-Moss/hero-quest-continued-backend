@@ -23,22 +23,44 @@ addUser = async (req, res) => {
 checkIfEmailInUse  = async (req, res) => {
     let theUserData = req.body;
     let theEmail = escapeHTML(req.body.email)
-    const emailTaken = await User.checkEmail(theEmail);
-
-    if (emailTaken === theUserData) {
+    const emailTaken = await User.checkEmail(theEmail); // need to add checkEmail
+    // probably need to switch these, emailTaken = userData no login
+    if (emailTaken === theUserData.email) {
         await User.add(req.body);
-        res.redirect('gameMenu')
+        res.json(emailTaken)
     } else {
         res.json({
             message: "That email has already been used, please enter a different email.",
             firstName: `${req.body.firstName}`,
             lastName:"",
-            uerName: "",
+            userName: "",
             email: "",
             password:"",
             confirmPassword:""
         })
     }
+
+    checkForLoginSucess = async (req, res) => {
+        let userLoginData = req.body;
+        const theEmail = escapeHTML(req.body.email);
+        const theUserName = escapeHTML(req.body.userName)
+        const loginTestResult = await User.checkByUserName(theUserName)
+
+        if (loginTestResult === userLoginData) {
+            // this means that the users login info matches the db
+            // loginTest result has all users data in it to pass to frontend for use
+            // sends a json response with user data
+            res.json(loginTestResult)
+        } else {
+            res.json({
+                message: "Login unsucessful, check email and password and try again",
+                email: "",
+                password:"",
+                confirmPassword:""
+            })
+        }
+    } 
+    
 }
 
 module.exports = {

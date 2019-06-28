@@ -53,7 +53,7 @@ class User {
 
     static checkUserName(userName) {
         const aUserName = escapeHTML(userName);
-        return db.one(`select user_name from users where userName=$1`,  [aUserName])
+        return db.one(`select * from users where userName=$1`,  [aUserName])
         .catch(() => {
             return null;
         });
