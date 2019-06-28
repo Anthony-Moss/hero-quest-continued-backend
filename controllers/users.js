@@ -44,7 +44,7 @@ checkIfEmailInUse  = async (req, res) => {
         let userLoginData = req.body;
         const theEmail = escapeHTML(req.body.email);
         const theUserName = escapeHTML(req.body.userName)
-        const loginTestResult = await User.checkByUserName(theUserName)
+        const loginTestResult = await User.getByUserName(theUserName)
 
         if (loginTestResult === userLoginData) {
             // this means that the users login info matches the db

@@ -1,5 +1,5 @@
 const db = require('./conn');
-const bcrypt = require('bcrpytjs');
+const bcryptjs = require('bcryptjs');
 const escapeHTML = require('../utils');
 
 class User {
@@ -18,7 +18,7 @@ class User {
         const userName = escapeHTML(userData.user_name);
         const email = escapeHTML(userData.email);
         const aPassword = escapeHTML(userData.password)
-        const hashedPass = User.hashPass(aPassword)
+        const hashedPass = hashPass(aPassword)
         return db.one(`
             insert into users
                 (first_name, last_name, user_name, email, password)
@@ -32,7 +32,7 @@ class User {
     }
 
     static delete(id) {
-        return db.resul('delete from users where id=$1', [id]);
+        return db.result('delete from users where id=$1', [id]);
     }
 
     // this returns a promise
@@ -53,22 +53,27 @@ class User {
 
     static checkUserName(userName) {
         const aUserName = escapeHTML(userName);
-        return db.one(`select * from users where userName=$1`,  [aUserName])
+        return db.one(`select user_name from users where userName=$1`,  [aUserName])
         .catch(() => {
             return null;
         });
     }
 
     static hashPass(thePassword) {
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(thePassword, salt)
+        const salt = bcryptjs.genSaltSync(10);
+        const hash = bcryptjs.hashSync(thePassword, salt)
         return hash;
     }
 
     setPassword(newPassword) {
-        const salt = bcrypt.genSaltSync();
-        const hash = bcrypt.hashSync(newPassword, salt);
+        const salt = bcryptjs.genSaltSync();
+        const hash = bcryptjs.hashSync(newPassword, salt);
         this.password = hash;
+    }
+
+    checkPassword(aPassword) {
+        //const isCorrect = bcrypt.compareSync(aPassword, this.password);
+        return bcrpyt.compareSync(aPassword, this.password);
     }
 
     saveUser() {
