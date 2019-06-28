@@ -24,7 +24,7 @@ checkIfEmailInUse  = async (req, res) => {
     let theUserData = req.body;
     let theEmail = escapeHTML(req.body.email)
     const emailTaken = await User.checkEmail(theEmail); // need to add checkEmail
-    // probably need to switch these, emailTaken = userData no login
+    // probably need to switch these, emailTaken = userData no add user
     if (emailTaken === theUserData.email) {
         await User.add(req.body);
         res.json(emailTaken)

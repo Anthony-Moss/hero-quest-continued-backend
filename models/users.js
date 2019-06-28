@@ -18,14 +18,14 @@ class User {
         const userName = escapeHTML(userData.user_name);
         const email = escapeHTML(userData.email);
         const aPassword = escapeHTML(userData.password)
-        // const hashedPass = User.hashPass(aPassword)
+        const hashedPass = User.hashPass(aPassword)
         return db.one(`
             insert into users
                 (first_name, last_name, user_name, email, password)
             values
                 ($1, $2, $3, $4)
             returning id, first_name, last_name, user_name
-        `, [firstName, lastName, userName, email, aPassword])
+        `, [firstName, lastName, userName, email, hashedPass])
         .then((formData) => {
             return formData.id
         })
