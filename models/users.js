@@ -1,6 +1,7 @@
 const db = require('./conn');
 const bcryptjs = require('bcryptjs');
 const escapeHTML = require('../utils');
+const qs = require('qs')
 
 class User {
     constructor(id, first_name, last_name, user_name, email, password) {
@@ -13,12 +14,12 @@ class User {
     }
 
     static add(userData) {
-        const firstName = escapeHTML(userData.first_name);
-        const lastName = escapeHTML(userData.last_name);
-        const userName = escapeHTML(userData.user_name);
-        const email = escapeHTML(userData.email);
-        const aPassword = escapeHTML(userData.password)
-        const hashedPass = hashPass(aPassword)
+        const firstName = userData.first_name;
+        const lastName = userData.last_name;
+        const userName = userData.user_name;
+        const email = qs.stringify(userData.email);
+        const aPassword = userData.password;
+        const hashedPass = this.hashPass(aPassword);
         return db.one(`
             insert into users
                 (first_name, last_name, user_name, email, password)
@@ -52,10 +53,19 @@ class User {
     }
 
     static checkUserName(userName) {
-        const aUserName = escapeHTML(userName);
+        const aUserName = userName;
         return db.one(`select user_name from users where userName=$1`,  [aUserName])
         .catch(() => {
             return null;
+        });
+    }
+
+    static checkEmail(userData) {
+        console.log(`${userData} is being sent to backend`)
+        const aEmail = userData;
+        return db.one(`select email from users where email=$1`, [userData[0]]) // signals email is associated with a user instance and returns email
+        .catch(() => {
+            return userData; //signals that email is not in database, so we can create new user
         });
     }
 
