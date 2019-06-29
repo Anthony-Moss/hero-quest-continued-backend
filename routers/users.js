@@ -8,8 +8,8 @@ const {
 
 
 // when  getting create user page, run showCreateUser
-router.get("/createUser", showCreateUser);
+router.get("/", showCreateUser);
 // when posting on create user page, run checkIfEmail use, then addUser
-router.post("/createUser", checkIfEmailInUse);
+router.post("/", checkIfEmailInUse);
 
 module.exports  = router;
