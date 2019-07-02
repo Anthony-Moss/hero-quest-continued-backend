@@ -60,6 +60,23 @@ class User {
         });
     }
 
+    static checkLoginAndPassword(userData) {
+        const aUserName = userData.userName;
+        const hashedPass = this.checkPassword(userData.password)
+        return db.one(`select * from users where userName=$1`,  [aUserName])
+        .then((accountInfo) => {
+            if (hashedPass === accountInfo.password) {
+                // this means login is successfull
+                return accountInfo
+            } else {
+                return aUserName
+            }
+        })
+        .catch(() => {
+            return null;
+        });
+    }
+
     static checkEmail(userData) {
         console.log(`${userData} is being sent to backend`)
         const aEmail = userData;

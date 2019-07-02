@@ -21,7 +21,7 @@ addUser = async (req, res) => {
 }
 
 checkIfEmailInUse  = async (req, res) => {
-    console.log(req.body.email)
+    console.log(req.body)
     let theUserData = req.body;
     let theEmail = req.body.email
     const emailTaken = await User.checkEmail(theEmail); // need to add checkEmail
@@ -45,7 +45,8 @@ checkIfEmailInUse  = async (req, res) => {
         let userLoginData = req.body;
         const theEmail = escapeHTML(req.body.email);
         const theUserName = escapeHTML(req.body.userName)
-        const loginTestResult = await User.getByUserName(theUserName)
+        // const loginTestResult = await User.getByUserName(theUserName)
+        const testPassword = await User.checkPassword(userLoginData)
 
         if (loginTestResult === userLoginData) {
             // this means that the users login info matches the db
