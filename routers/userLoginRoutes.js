@@ -2,13 +2,15 @@ const express = require('express');
 const loginRouter = express.Router();
 const {
     showCreateUser,
-    checkForLoginSucess
+    checkForLoginSucess,
+    checkIfEmailInUse,
+    checkLogin
 } = require('../controllers/users');
 
 
 // when  getting login page, run showCreateUser
-router.get("/login", showCreateUser);
+loginRouter.get("/", showCreateUser);
 // when posting on login page run the test login function
-router.post("/login", checkForLoginSucess);
+loginRouter.post("/", checkLogin);
 
-module.exports  = loginRouter;
+module.exports = loginRouter;
