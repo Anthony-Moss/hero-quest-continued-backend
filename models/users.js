@@ -37,10 +37,16 @@ class User {
     }
 
     // this returns a promise
+    // if current option doessnt work copy this  function outline to make the check login
+    // just needs to run checkPassword as well
     static getByUserName(userName) {
-        return db.one(`select * from users where user_name=$1`, [userName])
+        const actualUserName = userName.toString()
+        return db.one(`select * from users where user_name=$1`, [actualUserName])
+        .catch(() => {
+            return null;
+        })
         .then(userData => {
-            const aUser = new  User(
+            const aUser = new User(
                 userData.id,
                 userData.first_name,
                 userData.last_name,
@@ -49,6 +55,9 @@ class User {
                 userData.password
             );
             return aUser
+        })
+        .catch(() => {
+            return null;
         });
     }
 
@@ -61,21 +70,7 @@ class User {
     }
 
     static checkLoginAndPassword(userData) {
-        const aUserName = userData.userName;
-        const subPass = userData.password
-        return db.one(`select * from users where userName=$1`,  [aUserName])
-        .then((accountInfo) => {
-            if (this.checkPassword(subPass)) {
-                // this means login is successfull
-                return accountInfo
-            } else {
-                // this means fail
-                return aUserName
-            }
-        })
-        .catch(() => {
-            return null;
-        });
+
     }
 
     // static checkLogin(userData) {
@@ -97,7 +92,7 @@ class User {
                     //         return formData
                 // } else {
                     // return formData.userName
-                }
+                // }
     //     })
     // }
 
