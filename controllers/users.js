@@ -2,17 +2,44 @@ const User = require('../models/users');
 const escapeHTML = require('../utils');
 
 showCreateUser = async (req, res)  => {
-    res.render("CreateUser", {
-        locals: {
-            message: "Please fill in the below details to create your account.",
-            firstName: "",
+    res.json({
+        message: "You have sucessfully created an account.",
+        firstName: `${req.body.firstName}`,
+        lastName:"",
+        userName: "",
+        email: "",
+        password:""
+    })
+}
+
+
+async function checkLogin(req, res) {
+    const theUserName = req.body.userName;
+    const thePassword = req.body.password;
+    const theUser = await User.getByUserName(theUserName);
+    const passwordIsCorrect = await theUser.checkPassword(thePassword);
+    console.log(`This is the username: ${theUser.username}`);
+    if (passwordIsCorrect) {
+      req.session.user = theUser.id;
+      req.session.save(() => {
+        res.json({
+            firstName: `${req.body.firstName}`,
             lastName:"",
-            uerName: "",
+            userName: `${req.body.userName}`,
             email: "",
-            password:"",
-            confirmPassword:""
-        }
-    });
+            password:""
+        })
+      });
+    } else {
+        res.json({
+            message: "That email has already been used, please enter a different email.",
+            firstName: `${req.body.firstName}`,
+            lastName:"",
+            userName: "",
+            email: "",
+            password:""
+        })
+    }
 }
 
 addUser = async (req, res) => {
@@ -43,12 +70,12 @@ checkIfEmailInUse  = async (req, res) => {
 
     checkForLoginSucess = async (req, res) => {
         let userLoginData = req.body;
-        const theEmail = escapeHTML(req.body.email);
-        const theUserName = escapeHTML(req.body.userName)
+        const theEmail = req.body.email
+        const theUserName = req.body.userName
         // const loginTestResult = await User.getByUserName(theUserName)
-        const testPassword = await User.checkPassword(userLoginData)
+        const testPassword = await User.checkLoginAndPassword(userLoginData)
 
-        if (loginTestResult === userLoginData) {
+        if (testPassword) {
             // this means that the users login info matches the db
             // loginTest result has all users data in it to pass to frontend for use
             // sends a json response with user data
@@ -68,5 +95,6 @@ checkIfEmailInUse  = async (req, res) => {
 module.exports = {
     showCreateUser,
     addUser,
-    checkIfEmailInUse
+    checkIfEmailInUse,
+    checkLogin
 }
