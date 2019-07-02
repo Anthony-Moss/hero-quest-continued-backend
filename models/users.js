@@ -62,13 +62,14 @@ class User {
 
     static checkLoginAndPassword(userData) {
         const aUserName = userData.userName;
-        const hashedPass = this.checkPassword(userData.password)
+        const subPass = userData.password
         return db.one(`select * from users where userName=$1`,  [aUserName])
         .then((accountInfo) => {
-            if (hashedPass === accountInfo.password) {
+            if (this.checkPassword(subPass)) {
                 // this means login is successfull
                 return accountInfo
             } else {
+                // this means fail
                 return aUserName
             }
         })
@@ -76,6 +77,29 @@ class User {
             return null;
         });
     }
+
+    // static checkLogin(userData) {
+    //     const firstName = userData.first_name;
+    //     const lastName = userData.last_name;
+    //     const userName = userData.user_name;
+    //     const email = qs.stringify(userData.email);
+    //     const aPassword = userData.password;
+    //     const hashedPass = this.hashPass(aPassword);
+    //     return db.one(`
+    //         insert into users
+    //             (first_name, last_name, user_name, email, password)
+    //         values
+    //             ($1, $2, $3, $4)
+    //         returning id, first_name, last_name, user_name, password
+    //     `, [firstName, lastName, userName, email, hashedPass])
+    //     .then((formData) => {
+                // if (checkPassword) {
+                    //         return formData
+                // } else {
+                    // return formData.userName
+                }
+    //     })
+    // }
 
     static checkEmail(userData) {
         console.log(`${userData} is being sent to backend`)
