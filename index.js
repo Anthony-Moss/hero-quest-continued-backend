@@ -11,8 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(
     session({
-      store: new FileStore(), // no options for now
-      secret: 'abc123'
+      store: new FileStore(),
+      secret: 'abc123',
+      resave: false,
+      saveUninitialized: true
     })
   );
 
