@@ -137,9 +137,14 @@ class User {
 
     checkPassword(aPassword) {
         //const isCorrect = bcrypt.compareSync(aPassword, this.password);
-        console.log(aPassword)
-        console.log(this.password)
-        return bcryptjs.compareSync(aPassword, this.password);
+        // console.log(aPassword)
+        // console.log(this.password)
+        if (aPassword === this.password) {
+            return true
+        } else {
+            return false
+        }
+        // return bcryptjs.compareSync(aPassword, this.password);
     }
 
     saveUser() {
