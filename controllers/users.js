@@ -14,31 +14,28 @@ showCreateUser = async (req, res)  => {
 
 
 async function checkLogin(req, res) {
-    const theUserName = req.body.userName;
+    const theEmail = req.body.email;
     const thePassword = req.body.password;
-    const theUser = await User.getByUserName(theUserName);
+    const theUser = await User.getByEmail(theEmail);
+    console.log(`This is the username: ${theUser.userName}`);
     const passwordIsCorrect = await theUser.checkPassword(thePassword);
-    console.log(`This is the username: ${theUser.username}`);
+    console.log(passwordIsCorrect)
     if (passwordIsCorrect) {
-      req.session.user = theUser.id;
-      req.session.save(() => {
-        res.json({
-            firstName: `${req.body.firstName}`,
-            lastName:"",
-            userName: `${req.body.userName}`,
-            email: "",
-            password:""
-        })
-      });
+    //   req.session.user = theUser.id;
+    //   req.session.save(() => {
+        // res.json({
+            // message: 'Login Sucessful'
+            console.log('login should work')
+        // })
+    //   })
     } else {
-        res.json({
-            message: "That email has already been used, please enter a different email.",
-            firstName: `${req.body.firstName}`,
-            lastName:"",
-            userName: "",
-            email: "",
-            password:""
-        })
+        // res.json({
+        //     message: "That email has already been used, please enter a different email.",
+        //     email: "",
+        //     password:""
+        // })
+        console.log('login should fail')
+
     }
 }
 
