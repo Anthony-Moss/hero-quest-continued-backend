@@ -61,6 +61,24 @@ class User {
         });
     }
 
+    static getByEmail(email) {
+        return db.one(`select * from users where email=$1`, [email])
+        .then(userData => {
+            const aUser = new User(
+                userData.id,
+                userData.first_name,
+                userData.last_name,
+                userData.user_name,
+                userData.email,
+                userData.password
+            );
+            return aUser
+        })
+        .catch(() => {
+            return null;
+        });
+    }
+
     static checkUserName(userName) {
         const aUserName = userName;
         return db.one(`select user_name from users where userName=$1`,  [aUserName])
@@ -119,7 +137,9 @@ class User {
 
     checkPassword(aPassword) {
         //const isCorrect = bcrypt.compareSync(aPassword, this.password);
-        return bcrpyt.compareSync(aPassword, this.password);
+        console.log(aPassword)
+        console.log(this.password)
+        return bcryptjs.compareSync(aPassword, this.password);
     }
 
     saveUser() {
