@@ -25,8 +25,10 @@ async function checkLogin(req, res) {
     //   req.session.save(() => {
         // res.json({
             // message: 'Login Sucessful'
-            console.log('login should work')
-        // })
+            // console.log(res.json)
+        // });
+        console.log(`what is working?' ${theUser.lastName}`)
+        res.json(theUser)
     //   })
     } else {
         // res.json({

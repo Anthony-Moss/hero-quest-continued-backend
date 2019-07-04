@@ -116,8 +116,8 @@ class User {
 
     static checkEmail(userData) {
         console.log(`${userData} is being sent to backend`)
-        const aEmail = userData;
-        return db.one(`select email from users where email=$1`, [userData[0]]) // signals email is associated with a user instance and returns email
+        const aEmail = userData[0];
+        return db.one(`select email from users where email=$1`, [aEmail]) // signals email is associated with a user instance and returns email
         .catch(() => {
             return userData; //signals that email is not in database, so we can create new user
         });
@@ -137,8 +137,8 @@ class User {
 
     checkPassword(aPassword) {
         //const isCorrect = bcrypt.compareSync(aPassword, this.password);
-        // console.log(aPassword)
-        // console.log(this.password)
+        console.log(aPassword)
+        console.log(this.password)
         if (aPassword === this.password) {
             return true
         } else {

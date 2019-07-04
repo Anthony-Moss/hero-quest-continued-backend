@@ -3,7 +3,8 @@ const router = express.Router();
 const {
     showCreateUser,
     addUser,
-    checkIfEmailInUse
+    checkIfEmailInUse,
+    // checkForLoginSucess
 } = require('../controllers/users');
 
 

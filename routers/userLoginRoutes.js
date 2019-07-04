@@ -9,7 +9,7 @@ const {
 
 
 // when  getting login page, run showCreateUser
-loginRouter.get("/", showCreateUser);
+loginRouter.get("/", checkLogin);
 // when posting on login page run the test login function
 loginRouter.post("/", checkLogin);
 
